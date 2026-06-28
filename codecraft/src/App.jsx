@@ -10,33 +10,47 @@ export default function App() {
       <Canvas
         shadows
         camera={{ fov: 70, near: 0.1, far: 200 }}
-        gl={{ antialias: false }}
+        gl={{ antialias: false }}   // pixelig = Minecraft-Feeling
       >
-        {/* Minecraft-typischer blauer Himmel */}
+        {/* Realistischer Minecraft-Himmel */}
         <Sky
           distance={450}
-          sunPosition={[1, 0.4, 0]}
-          inclination={0.55}
-          azimuth={0.25}
+          sunPosition={[2, 1, 0.5]}
+          inclination={0.52}
+          azimuth={0.22}
+          mieCoefficient={0.003}
+          mieDirectionalG={0.9}
+          rayleigh={0.8}
+          turbidity={8}
         />
 
-        {/* Licht */}
-        <ambientLight intensity={0.7} />
+        {/* Umgebungslicht — warmes Tageslicht */}
+        <ambientLight intensity={0.55} color="#FFF4E0" />
+
+        {/* Sonne von schräg oben — wirft Schatten */}
         <directionalLight
-          position={[20, 40, 20]}
-          intensity={1.0}
+          position={[40, 60, 30]}
+          intensity={1.1}
+          color="#FFFBE8"
           castShadow
-          shadow-mapSize={[1024, 1024]}
-          shadow-camera-near={0.5}
-          shadow-camera-far={100}
-          shadow-camera-left={-30}
-          shadow-camera-right={30}
-          shadow-camera-top={30}
-          shadow-camera-bottom={-30}
+          shadow-mapSize={[2048, 2048]}
+          shadow-camera-near={1}
+          shadow-camera-far={150}
+          shadow-camera-left={-40}
+          shadow-camera-right={40}
+          shadow-camera-top={40}
+          shadow-camera-bottom={-40}
         />
 
-        {/* Nebel ab 60 Blöcken — wie Minecraft Render Distance */}
-        <fog attach="fog" args={['#87CEEB', 30, 80]} />
+        {/* Leichtes Fülllicht von unten/vorne — simuliert Himmelslicht */}
+        <directionalLight
+          position={[-10, 10, -20]}
+          intensity={0.2}
+          color="#C8E8FF"
+        />
+
+        {/* Minecraft-typischer Nebel */}
+        <fog attach="fog" args={['#99C8E8', 35, 90]} />
 
         <Player />
         <MinecraftWorld />
